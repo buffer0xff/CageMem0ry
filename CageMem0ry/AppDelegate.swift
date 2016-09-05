@@ -16,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        let startViewController = GameViewController()
+        startViewController.view.backgroundColor = UIColor.grayColor()
+        self.window?.rootViewController = startViewController
+        self.window?.makeKeyAndVisible()
         return true
     }
 
