@@ -25,7 +25,6 @@ class PokerCell: UICollectionViewCell {
                 dispatch_after(delayTime, dispatch_get_main_queue(), {
                     self.imageView.hidden = true
                     self.coverView.hidden = true
-                    self.contentView.backgroundColor = UIColor.whiteColor()
                 })
             }
         }
@@ -33,6 +32,7 @@ class PokerCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.contentView.backgroundColor = UIColor.whiteColor()
         
         self.imageView.contentMode = .ScaleAspectFit
         self.imageView.backgroundColor = UIColor.whiteColor()
@@ -50,6 +50,14 @@ class PokerCell: UICollectionViewCell {
         }
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.hidden = false
+        self.coverView.hidden = false
+        self.pokerId = 1
+        self.cleared = false
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -63,6 +71,10 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     let screenHeight = UIScreen.mainScreen().bounds.size.height
     let itemRatio = 0.75  // item width/height
     var itemSize = CGSizeZero
+    let timeLable = UILabel()
+    private var timer: NSTimer?
+    private var time = 60
+    var returnPokers = 0
     
     let model = Model()
     var pokers = [UInt]()
@@ -83,12 +95,21 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(self.gameBoard)
         
+        self.timeLable.text = "剩余时间\(self.time)秒"
+        self.timeLable.textAlignment = .Center
+        self.timeLable.font = UIFont.systemFontOfSize(21)
+        self.view.addSubview(self.timeLable)
+        self.timeLable.snp_makeConstraints { (make) in
+            make.left.right.equalTo(self.view)
+            make.top.equalTo(self.view).inset(44)
+            make.height.equalTo(21)
+        }
+        
         let itemWidth = (self.screenWidth - 30*3 - 50*2)/4
         let itemHeight = (self.screenHeight - 64 - 30*3 - 50*2)/4
         self.itemSize = CGSizeMake(itemWidth, itemHeight)
         
-        self.pokers = self.model.getPokers()
-        print(self.pokers)
+        self.startGame()
     }
 
     override func didReceiveMemoryWarning() {
@@ -96,10 +117,39 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Dispose of any resources that can be recreated.
     }
     
+    func startGame() {
+        self.pokers = self.model.getPokers()
+        self.returnPokers = self.pokers.count
+        print(self.pokers)
+        self.lastIndex = nil
+        self.gameBoard.reloadData()
+        self.time = 60
+        self.startTimer()
+    }
+    
+    private func startTimer() {
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(resumeTimer), userInfo: nil, repeats: true)
+        self.timeLable.text = "剩余时间\(self.time)秒"
+    }
+    
+    func resumeTimer() {
+        self.time -= 1
+        self.timeLable.text = "剩余时间\(self.time)秒"
+        if self.time == 0 {
+            self.timer?.invalidate()
+            self.timer = nil
+            self.time = 60
+            
+            let alert = UIAlertController(title: "渗透失败", message: "游戏失败，请再接再厉", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "我知道了", style: .Cancel, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 16
+        return self.pokers.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -143,6 +193,17 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if currentCell.pokerId == lastCell.pokerId {
             currentCell.cleared = true
             lastCell.cleared = true
+            self.returnPokers -= 2
+            if self.returnPokers == 0 {
+                self.timer?.invalidate()
+                self.timer = nil
+                let alert = UIAlertController(title: "渗透成功", message: "渗透时间\(60-self.time)秒", preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "我知道了", style: .Cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "继续", style: .Default, handler: { (action) in
+                    self.startGame()
+                }))
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
         } else {
             let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
             dispatch_after(delayTime, dispatch_get_main_queue(), {
