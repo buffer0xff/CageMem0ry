@@ -66,19 +66,21 @@ class PokerCell: UICollectionViewCell {
 
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var gameBoard = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
-    let screenWidth = UIScreen.mainScreen().bounds.size.width
-    let screenHeight = UIScreen.mainScreen().bounds.size.height
-    let itemRatio = 0.75  // item width/height
-    var itemSize = CGSizeZero
-    let timeLable = UILabel()
+    //  DEFINE GLOBAL VALUE
+    private let BASETIME = 60 // change this value for adjust time
+    
+    private var gameBoard = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let screenWidth = UIScreen.mainScreen().bounds.size.width
+    private let screenHeight = UIScreen.mainScreen().bounds.size.height
+    private var itemSize = CGSizeZero
+    private let timeLable = UILabel()
     private var timer: NSTimer?
     private var time = 60
-    var returnPokers = 0
+    private var returnPokers = 0
     
-    let model = Model()
-    var pokers = [UInt]()
-    var lastIndex: NSIndexPath?
+    private let model = Model()
+    private var pokers = [UInt]()
+    private var lastIndex: NSIndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -123,7 +125,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         print(self.pokers)
         self.lastIndex = nil
         self.gameBoard.reloadData()
-        self.time = 60
+        self.time = BASETIME
         self.startTimer()
     }
     
@@ -138,11 +140,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         if self.time == 0 {
             self.timer?.invalidate()
             self.timer = nil
-            self.time = 60
-            
-            let alert = UIAlertController(title: "渗透失败", message: "游戏失败，请再接再厉", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "我知道了", style: .Cancel, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.time = BASETIME
+
+            let result = ResultViewController()
+            result.type = .Failed
+            self.navigationController?.pushViewController(result, animated: true)
         }
     }
     
@@ -197,12 +199,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             if self.returnPokers == 0 {
                 self.timer?.invalidate()
                 self.timer = nil
-                let alert = UIAlertController(title: "渗透成功", message: "渗透时间\(60-self.time)秒", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "我知道了", style: .Cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "继续", style: .Default, handler: { (action) in
-                    self.startGame()
-                }))
-                self.presentViewController(alert, animated: true, completion: nil)
+
+                let result = ResultViewController()
+                result.time = 60-self.time
+                result.type = .Success
+                self.navigationController?.pushViewController(result, animated: true)
             }
         } else {
             let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))

@@ -15,7 +15,36 @@ enum ResultType {
 
 class ResultViewController: UIViewController {
 
-    var type = ResultType.Success
+    var type = ResultType.Success {
+        didSet {
+            if type == .Success {
+                self.successDetail.hidden = false
+                self.failedDetail.hidden = true
+                titleLabel.text = "渗透成功"
+            } else {
+                self.successDetail.hidden = true
+                self.failedDetail.hidden = false
+                titleLabel.text = "渗透失败"
+                self.failedDetail.text = "渗透失败，请再接再厉"
+            }
+        }
+    }
+    var time = 0 {
+        didSet {
+            if type == .Success {
+                timeLabel.text = "渗透时间\(self.time)秒"
+                rateLabel.text = "能力评价（\(self.getGift())）"
+                giftLabel.text = "恭喜你获得小礼品一份"
+            }
+        }
+    }
+    
+    private let titleLabel = UILabel()
+    private let successDetail = UIView()
+    private let timeLabel = UILabel()
+    private let rateLabel = UILabel()
+    private let giftLabel = UILabel()
+    private let failedDetail = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,25 +60,20 @@ class ResultViewController: UIViewController {
     
 
     private func setupView() {
-        let titleLabel = UILabel()
-        let successDetail = UIView()
-        let timeLabel = UILabel()
-        let rateLabel = UILabel()
-        let rewardLabel = UILabel()
-        let failedDetail = UILabel()
         let backButton = UIButton()
         successDetail.addSubview(timeLabel)
         successDetail.addSubview(rateLabel)
-        successDetail.addSubview(rewardLabel)
+        successDetail.addSubview(giftLabel)
         self.view.addSubview(titleLabel)
         self.view.addSubview(successDetail)
         self.view.addSubview(failedDetail)
         self.view.addSubview(backButton)
         
-        titleLabel.text = "渗透成功"
-        timeLabel.text = "渗透时间28秒"
-        rateLabel.text = "能力评价（进阶黑客）"
-        rewardLabel.text = "恭喜你获得小礼品一份"
+        titleLabel.textAlignment = .Center
+        timeLabel.textAlignment = .Center
+        rateLabel.textAlignment = .Center
+        giftLabel.textAlignment = .Center
+        failedDetail.textAlignment = .Center
         backButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         backButton.setTitle("返回首页", forState: .Normal)
         backButton.addTarget(self, action: #selector(ResultViewController.onBackTapped), forControlEvents: .TouchUpInside)
@@ -84,7 +108,7 @@ class ResultViewController: UIViewController {
             make.left.right.equalTo(successDetail)
             make.height.equalTo(21)
         }
-        rewardLabel.snp_makeConstraints { (make) in
+        giftLabel.snp_makeConstraints { (make) in
             make.top.equalTo(rateLabel.snp_bottom)
             make.left.right.equalTo(successDetail)
             make.height.equalTo(21)
@@ -93,6 +117,23 @@ class ResultViewController: UIViewController {
     
     func onBackTapped() {
         self.navigationController?.popToRootViewControllerAnimated(false)
+    }
+    
+    private func getGift() -> String {
+        switch self.time {
+        case 0...10:
+            return "传奇黑客"
+        case 11...20:
+            return "黑客大师"
+        case 21...30:
+            return "进阶黑客"
+        case 31...40:
+            return "普通黑客"
+        case 41...50:
+            return "黑客新手"
+        default:
+            return "黑客新手"
+        }
     }
 
 }
