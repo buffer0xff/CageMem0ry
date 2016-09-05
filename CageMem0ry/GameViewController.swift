@@ -25,7 +25,7 @@ class PokerCell: UICollectionViewCell {
                 dispatch_after(delayTime, dispatch_get_main_queue(), {
                     self.imageView.hidden = true
                     self.coverView.hidden = true
-                    self.contentView.backgroundColor = UIColor.blackColor()
+                    self.contentView.backgroundColor = UIColor.whiteColor()
                 })
             }
         }
@@ -43,7 +43,7 @@ class PokerCell: UICollectionViewCell {
         
         self.coverView.image = UIImage(named: "Cover")
         self.coverView.contentMode = .Center
-        self.coverView.backgroundColor = UIColor.darkGrayColor()
+        self.coverView.backgroundColor = UIColor.lightGrayColor()
         self.contentView.addSubview(self.coverView)
         self.coverView.snp_makeConstraints { (make) in
             make.edges.equalTo(self.contentView)
@@ -67,11 +67,10 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     let model = Model()
     var pokers = [UInt]()
     var lastIndex: NSIndexPath?
-//    var currentIndex: NSIndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.gameBoard = UICollectionView(frame: self.view.frame, collectionViewLayout: UICollectionViewFlowLayout())
+        self.gameBoard = UICollectionView(frame: CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height), collectionViewLayout: UICollectionViewFlowLayout())
         self.gameBoard.showsVerticalScrollIndicator = false
         self.gameBoard.showsHorizontalScrollIndicator = false
         self.gameBoard.scrollEnabled = false
@@ -80,10 +79,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.gameBoard.delegate = self
         self.gameBoard.dataSource = self
         self.gameBoard.registerClass(PokerCell.self, forCellWithReuseIdentifier: "identifier")
+        self.gameBoard.backgroundColor = UIColor.whiteColor()
+        self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(self.gameBoard)
         
         let itemWidth = (self.screenWidth - 30*3 - 50*2)/4
-        let itemHeight = (self.screenHeight - 30*3 - 50*2)/4
+        let itemHeight = (self.screenHeight - 64 - 30*3 - 50*2)/4
         self.itemSize = CGSizeMake(itemWidth, itemHeight)
         
         self.pokers = self.model.getPokers()
