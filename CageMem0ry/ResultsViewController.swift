@@ -28,6 +28,8 @@ class ResultsViewController: UIViewController {
     var outAnimationDuration = 0.2
     private var first = true
     
+    let decorationView = UIImageView()
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.modalTransitionStyle = .CrossDissolve
@@ -72,6 +74,8 @@ class ResultsViewController: UIViewController {
         failedDetailLabel.text = "渗透失败，请再接再厉"
         backButton.setBackgroundImage(UIImage(named: "Back"), forState: .Normal)
         backButton.addTarget(self, action: #selector(ResultsViewController.onBackTapped), forControlEvents: .TouchUpInside)
+        decorationView.image = UIImage(named: "Decoration")
+        decorationView.frame = CGRectMake(66, 0, 634, 564)
         
         if self.type == .Success {
             failedDetailLabel.hidden = true
@@ -82,6 +86,7 @@ class ResultsViewController: UIViewController {
             banner.image = UIImage(named: "FailedBanner")
             timeLabel.hidden = true
             successDetailLabel.hidden = true
+            decorationView.hidden = true
         }
 
         alertView.addSubview(banner)
@@ -90,6 +95,7 @@ class ResultsViewController: UIViewController {
         alertView.addSubview(failedDetailLabel)
         alertView.addSubview(backButton)
         self.view.addSubview(alertView)
+        self.view.addSubview(decorationView)
         
         alertView.snp_makeConstraints { (make) in
             make.top.equalTo(self.view).inset(218)
@@ -122,7 +128,9 @@ class ResultsViewController: UIViewController {
             make.centerX.equalTo(alertView)
             make.bottom.equalTo(alertView).inset(36)
         }
-        
+        if self.type == .Success {
+            self.animateDecoration()
+        }
     }
     
     func cleanUpResultsView() {
@@ -148,6 +156,16 @@ class ResultsViewController: UIViewController {
         self.dismissViewControllerAnimated(false) { 
             self.delegate?.backToWelcome()
         }
+    }
+    
+    private func animateDecoration() {
+        self.decorationView.transform = CGAffineTransformMakeScale(0.3, 0.3)
+        UIView.animateWithDuration(0.3, delay: 0.25, options: .CurveEaseIn, animations: { () -> Void in
+            self.decorationView.alpha = 1
+            }, completion: nil)
+        UIView.animateWithDuration(0.5, delay: 0.4, usingSpringWithDamping: 0.5, initialSpringVelocity: 1, options: .CurveEaseIn, animations: { () -> Void in
+            self.decorationView.transform = CGAffineTransformMakeScale(1, 1)
+            }, completion: nil)
     }
     
     private func getGift() -> String {
