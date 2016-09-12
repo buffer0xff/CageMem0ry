@@ -148,6 +148,14 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
     }
     
+    private func showAllPokers() {
+        for i in 0...(self.pokers.count - 1) {
+            let cell = self.gameBoard.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! PokerCell
+            cell.imageView.hidden = false
+            cell.coverView.hidden = true
+        }
+    }
+    
     // MARK: UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -203,6 +211,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 let result = ResultViewController()
                 result.time = 60-self.time
                 result.type = .Success
+                
+                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
+                dispatch_after(delayTime, dispatch_get_main_queue(), {
+                    self.showAllPokers()
+                })
                 self.navigationController?.pushViewController(result, animated: true)
             }
         } else {
