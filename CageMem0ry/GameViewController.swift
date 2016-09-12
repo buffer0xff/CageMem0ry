@@ -64,7 +64,7 @@ class PokerCell: UICollectionViewCell {
     
 }
 
-class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ResultsDelegate {
     
     //  DEFINE GLOBAL VALUE
     private let BASETIME = 60 // change this value for adjust time
@@ -142,9 +142,10 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.timer = nil
             self.time = BASETIME
 
-            let result = ResultViewController()
+            let result = ResultsViewController()
             result.type = .Failed
-            self.navigationController?.pushViewController(result, animated: true)
+            result.delegate = self
+            self.navigationController?.presentViewController(result, animated: false, completion: nil)
         }
     }
     
@@ -154,6 +155,12 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             cell.imageView.hidden = false
             cell.coverView.hidden = true
         }
+    }
+    
+    // MARK: ResultsDelegate
+    
+    func backToWelcome() {
+        self.navigationController?.popToRootViewControllerAnimated(true)
     }
     
     // MARK: UICollectionViewDataSource
@@ -208,15 +215,16 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.timer?.invalidate()
                 self.timer = nil
 
-                let result = ResultViewController()
+                let result = ResultsViewController()
                 result.time = 60-self.time
                 result.type = .Success
+                result.delegate = self
                 
                 let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
                 dispatch_after(delayTime, dispatch_get_main_queue(), {
                     self.showAllPokers()
                 })
-                self.navigationController?.pushViewController(result, animated: true)
+                self.navigationController?.presentViewController(result, animated: false, completion: nil)
             }
         } else {
             let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))

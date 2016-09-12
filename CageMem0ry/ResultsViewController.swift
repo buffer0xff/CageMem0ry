@@ -9,7 +9,13 @@
 import UIKit
 import YNLib
 
+protocol ResultsDelegate: NSObjectProtocol {
+    func backToWelcome()
+}
+
 class ResultsViewController: UIViewController {
+    
+    weak var delegate: ResultsDelegate?
     
     var type = ResultType.Success
     var time = 0
@@ -60,6 +66,7 @@ class ResultsViewController: UIViewController {
         failedDetailLabel.font = UIFont.boldSystemFontOfSize(32)
         failedDetailLabel.text = "渗透失败，请再接再厉"
         backButton.setBackgroundImage(UIImage(named: "Back"), forState: .Normal)
+        backButton.addTarget(self, action: #selector(ResultsViewController.onBackTapped), forControlEvents: .TouchUpInside)
         
         if self.type == .Success {
             failedDetailLabel.hidden = true
@@ -130,6 +137,12 @@ class ResultsViewController: UIViewController {
         })
         self.cleanUpResultsView()
         
+    }
+    
+    func onBackTapped() {
+        self.dismissViewControllerAnimated(false) { 
+            self.delegate?.backToWelcome()
+        }
     }
     
     private func getGift() -> String {

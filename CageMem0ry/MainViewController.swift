@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
         let startButton = UIButton()
         startButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         startButton.titleLabel?.font = UIFont.systemFontOfSize(21)
-        startButton.setImage(UIImage(named: "Start"), forState: .Normal)
+        startButton.setBackgroundImage(UIImage(named: "Start"), forState: .Normal)
         startButton.contentMode = .ScaleAspectFill
         startButton.addTarget(self, action: #selector(MainViewController.onStartTapped), forControlEvents: .TouchUpInside)
         self.view.addSubview(startButton)
