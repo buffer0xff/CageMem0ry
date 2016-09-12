@@ -13,6 +13,11 @@ protocol ResultsDelegate: NSObjectProtocol {
     func backToWelcome()
 }
 
+enum ResultType {
+    case Success
+    case Failed
+}
+
 class ResultsViewController: UIViewController {
     
     weak var delegate: ResultsDelegate?
