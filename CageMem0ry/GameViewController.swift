@@ -42,7 +42,7 @@ class PokerCell: UICollectionViewCell {
         }
         
         self.coverView.image = UIImage(named: "Cover")
-        self.coverView.contentMode = .Center
+        self.coverView.contentMode = .ScaleAspectFill
         self.coverView.backgroundColor = UIColor.lightGrayColor()
         self.contentView.addSubview(self.coverView)
         self.coverView.snp_makeConstraints { (make) in
