@@ -176,10 +176,6 @@ class ResultsViewController: UIViewController {
             return "黑客大师"
         case 16...20:
             return "进阶黑客"
-        case 21...25:
-            return "普通黑客"
-        case 26...30:
-            return "黑客新手"
         default:
             return "黑客新手"
         }
