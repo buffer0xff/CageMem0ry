@@ -107,6 +107,18 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             make.height.equalTo(21)
         }
         
+        let restartButton = UIButton()
+        restartButton.setTitle("重新开始", forState: .Normal)
+        restartButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        restartButton.addTarget(self, action: #selector(GameViewController.backToWelcome), forControlEvents: .TouchUpInside)
+        self.view.addSubview(restartButton)
+        restartButton.snp_makeConstraints { (make) in
+            make.right.equalTo(self.view).inset(30)
+            make.top.equalTo(self.view).inset(54)
+            make.width.equalTo(100)
+            make.height.equalTo(44)
+        }
+        
         let itemWidth = (self.screenWidth - 30*3 - 50*2)/4
         let itemHeight = (self.screenHeight - 64 - 30*3 - 50*2)/4
         self.itemSize = CGSizeMake(itemWidth, itemHeight)
@@ -125,6 +137,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         print(self.pokers)
         self.lastIndex = nil
         self.gameBoard.reloadData()
+        self.timer?.invalidate()
+        self.timer = nil
         self.time = BASETIME
         self.startTimer()
     }

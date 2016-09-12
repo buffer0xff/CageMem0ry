@@ -172,13 +172,13 @@ class ResultsViewController: UIViewController {
         switch self.time {
         case 0...10:
             return "传奇黑客"
-        case 11...20:
+        case 11...15:
             return "黑客大师"
-        case 21...30:
+        case 16...20:
             return "进阶黑客"
-        case 31...40:
+        case 21...25:
             return "普通黑客"
-        case 41...50:
+        case 26...30:
             return "黑客新手"
         default:
             return "黑客新手"
