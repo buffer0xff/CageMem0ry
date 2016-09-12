@@ -14,6 +14,7 @@
 		336BE5321D7D0D77009C2B11 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336BE5311D7D0D77009C2B11 /* Model.swift */; };
 		336BE5361D7D2E32009C2B11 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336BE5351D7D2E32009C2B11 /* MainViewController.swift */; };
 		336BE53B1D7D44F6009C2B11 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336BE5391D7D44F6009C2B11 /* ResultViewController.swift */; };
+		336E49F51D868BA0000D0F85 /* ResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336E49F41D868BA0000D0F85 /* ResultsViewController.swift */; };
 		F7FFD26DECCAA2E9F08B02BE /* Pods_CageMem0ry.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A028FC4532A5D77648540B /* Pods_CageMem0ry.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		336BE5311D7D0D77009C2B11 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		336BE5351D7D2E32009C2B11 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		336BE5391D7D44F6009C2B11 /* ResultViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		336E49F41D868BA0000D0F85 /* ResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsViewController.swift; sourceTree = "<group>"; };
 		6A7CA1F80719D9303D66C0CC /* Pods-CageMem0ry.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CageMem0ry.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CageMem0ry/Pods-CageMem0ry.debug.xcconfig"; sourceTree = "<group>"; };
 		7E35E9BD2D69C73199A04AA4 /* Pods-CageMem0ry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CageMem0ry.release.xcconfig"; path = "Pods/Target Support Files/Pods-CageMem0ry/Pods-CageMem0ry.release.xcconfig"; sourceTree = "<group>"; };
 		88A028FC4532A5D77648540B /* Pods_CageMem0ry.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CageMem0ry.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +71,7 @@
 				336BE5351D7D2E32009C2B11 /* MainViewController.swift */,
 				336BE52F1D7D0D6C009C2B11 /* GameViewController.swift */,
 				336BE5391D7D44F6009C2B11 /* ResultViewController.swift */,
+				336E49F41D868BA0000D0F85 /* ResultsViewController.swift */,
 				336BE5311D7D0D77009C2B11 /* Model.swift */,
 				336BE5241D7D0D42009C2B11 /* Assets.xcassets */,
 				336BE5261D7D0D42009C2B11 /* LaunchScreen.storyboard */,
@@ -220,6 +223,7 @@
 				336BE5301D7D0D6C009C2B11 /* GameViewController.swift in Sources */,
 				336BE51E1D7D0D42009C2B11 /* AppDelegate.swift in Sources */,
 				336BE5361D7D2E32009C2B11 /* MainViewController.swift in Sources */,
+				336E49F51D868BA0000D0F85 /* ResultsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
