@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import YNLib
 
 protocol ResultsDelegate: NSObjectProtocol {
     func backToWelcome()
@@ -45,7 +44,8 @@ class ResultsViewController: UIViewController {
             self.view.userInteractionEnabled = false
             self.view.backgroundColor = UIColor.clearColor()
             UIView.animateWithDuration(self.inAnimationDuration, animations: { () -> Void in
-                self.view.backgroundColor = UIColor(hexString: "#64000000")
+                
+                self.view.backgroundColor = UIColor(colorLiteralRed: 0, green: 0, blue: 0, alpha: 0.8)
                 }, completion: { _ in
                     self.view.userInteractionEnabled = true
             })
