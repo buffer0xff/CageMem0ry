@@ -67,7 +67,7 @@ class PokerCell: UICollectionViewCell {
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ResultsDelegate {
     
     //  DEFINE GLOBAL VALUE
-    private let BASETIME = 60 // change this value for adjust time
+    private let BASETIME = 30 // change this value for adjust time
     
     private var gameBoard = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
@@ -75,7 +75,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var itemSize = CGSizeZero
     private let timeLable = UILabel()
     private var timer: NSTimer?
-    private var time = 60
+    private var time = 30
     private var returnPokers = 0
     
     private let model = Model()
@@ -99,11 +99,11 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         self.timeLable.text = "剩余时间\(self.time)秒"
         self.timeLable.textAlignment = .Center
-        self.timeLable.font = UIFont.systemFontOfSize(21)
+        self.timeLable.font = UIFont.boldSystemFontOfSize(21)
         self.view.addSubview(self.timeLable)
         self.timeLable.snp_makeConstraints { (make) in
             make.left.right.equalTo(self.view)
-            make.top.equalTo(self.view).inset(44)
+            make.top.equalTo(self.view).inset(64)
             make.height.equalTo(21)
         }
         
@@ -216,7 +216,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 self.timer = nil
 
                 let result = ResultsViewController()
-                result.time = 60-self.time
+                result.time = self.BASETIME - self.time
                 result.type = .Success
                 result.delegate = self
                 
