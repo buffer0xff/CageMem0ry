@@ -159,6 +159,7 @@ class ResultsViewController: UIViewController {
     }
     
     private func animateDecoration() {
+        self.addBadassParticle()
         self.decorationView.transform = CGAffineTransformMakeScale(0.3, 0.3)
         UIView.animateWithDuration(0.3, delay: 0.25, options: .CurveEaseIn, animations: { () -> Void in
             self.decorationView.alpha = 1
@@ -180,6 +181,72 @@ class ResultsViewController: UIViewController {
             return "黑客新手"
         }
     }
+    
+    private func addBadassParticle() {
+        let particleEmitter = CAEmitterLayer()
+        
+        particleEmitter.emitterPosition = CGPoint(x: view.center.x, y: -96)
+        particleEmitter.emitterShape = kCAEmitterLayerLine
+        particleEmitter.emitterSize = CGSize(width: view.frame.size.width, height: 1)
+        
+        let cell = CAEmitterCell()
+        cell.name = "cell"
+        cell.birthRate = 0
+        cell.lifetime = 7.0
+        cell.lifetimeRange = 0
+        cell.velocity = 350
+        cell.velocityRange = 100
+        cell.emissionLongitude = CGFloat(M_PI)
+        cell.emissionRange = CGFloat(M_PI_4)
+        cell.spin = 2
+        cell.spinRange = 3
+        cell.scaleRange = 0.5
+        cell.contents = UIImage(named: "Particle1")?.CGImage
+        let cell1 = CAEmitterCell()
+        cell1.name = "cell1"
+        cell1.birthRate = 0
+        cell1.lifetime = 7.0
+        cell1.lifetimeRange = 0
+        cell1.velocity = 350
+        cell1.velocityRange = 100
+        cell1.emissionLongitude = CGFloat(M_PI)
+        cell1.emissionRange = CGFloat(M_PI_4)
+        cell1.spin = 2
+        cell1.spinRange = 3
+        cell1.scale = 0.5
+        cell1.contents = UIImage(named: "Particle4")?.CGImage
+        let cell2 = CAEmitterCell()
+        cell2.name = "cell2"
+        cell2.birthRate = 0
+        cell2.lifetime = 7.0
+        cell2.lifetimeRange = 0
+        cell2.velocity = 350
+        cell2.velocityRange = 100
+        cell2.emissionLongitude = CGFloat(M_PI)
+        cell2.emissionRange = CGFloat(M_PI_4)
+        cell2.spin = 2
+        cell2.spinRange = 3
+        cell2.scale = 0.5
+        cell2.contents = UIImage(named: "Particle5")?.CGImage
+        
+        particleEmitter.emitterCells = [cell,cell1,cell2]
+        self.view.layer.addSublayer(particleEmitter)
+        particleEmitter.beginTime = CACurrentMediaTime()
+        particleEmitter.setValue(15, forKeyPath: "emitterCells.cell.birthRate")
+        particleEmitter.setValue(10, forKeyPath: "emitterCells.cell1.birthRate")
+        particleEmitter.setValue(10, forKeyPath: "emitterCells.cell2.birthRate")
+        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue(), {
+            particleEmitter.setValue(200, forKeyPath: "emitterCells.cell.velocity")
+            particleEmitter.setValue(200, forKeyPath: "emitterCells.cell1.velocity")
+            particleEmitter.setValue(200, forKeyPath: "emitterCells.cell2.velocity")
+            particleEmitter.setValue(8, forKeyPath: "emitterCells.cell.birthRate")
+            particleEmitter.setValue(3, forKeyPath: "emitterCells.cell1.birthRate")
+            particleEmitter.setValue(3, forKeyPath: "emitterCells.cell2.birthRate")
+        })
+    }
+
     
 }
 
