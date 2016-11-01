@@ -71,7 +71,7 @@ class ResultsViewController: UIViewController {
         successDetailLabel.font = UIFont.boldSystemFontOfSize(32)
         failedDetailLabel.textAlignment = .Center
         failedDetailLabel.font = UIFont.boldSystemFontOfSize(32)
-        failedDetailLabel.text = "渗透失败，请再接再厉"
+        failedDetailLabel.text = "降糖失败，请再接再厉"
         backButton.setBackgroundImage(UIImage(named: "Back"), forState: .Normal)
         backButton.addTarget(self, action: #selector(ResultsViewController.onBackTapped), forControlEvents: .TouchUpInside)
         decorationView.image = UIImage(named: "Decoration")
