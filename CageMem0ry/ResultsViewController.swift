@@ -81,7 +81,12 @@ class ResultsViewController: UIViewController {
             failedDetailLabel.hidden = true
             banner.image = UIImage(named: "SuccessBanner")
             timeLabel.text = "花费时间\(self.time)秒"
-            successDetailLabel.text = "恭喜你获得称号\n［\(self.getGift())］\n及精美礼品一份"
+            switch self.time {
+            case 0...15:
+                successDetailLabel.text = "恭喜你获得称号\n［降糖达人］\n及精美礼品一份"
+            default:
+                successDetailLabel.text = "恭喜你获得称号\n［降糖卫士］\n及精美小礼品一份"
+            }
         } else {
             banner.image = UIImage(named: "FailedBanner")
             timeLabel.hidden = true

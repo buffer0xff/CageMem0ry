@@ -31,7 +31,7 @@ class MainViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.numberOfLines = 2
         descriptionLabel.textColor = UIColor.lightGrayColor()
-        descriptionLabel.text = "翻开两张牌，若这两张牌团相同则成功消除，若图案不\n同则被再次翻面。在30秒内将所有卡牌消除则降糖成功"
+        descriptionLabel.text = "翻开两张牌，若这两张牌图案相同则成功消除;若图案不\n同则被再次翻面。在30秒内将所有卡牌消除则降糖成功"
         self.view.addSubview(descriptionLabel)
         
         welcomeImageView.snp_makeConstraints { (make) in
