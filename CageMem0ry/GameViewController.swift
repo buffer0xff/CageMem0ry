@@ -67,7 +67,7 @@ class PokerCell: UICollectionViewCell {
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ResultsDelegate {
     
     //  DEFINE GLOBAL VALUE
-    private let BASETIME = 30 // change this value for adjust time
+    private let BASETIME = 60 // change this value for adjust time
     
     private var gameBoard = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
     private let screenWidth = UIScreen.mainScreen().bounds.size.width
@@ -75,7 +75,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var itemSize = CGSizeZero
     private let timeLable = UILabel()
     private var timer: NSTimer?
-    private var time = 30
+    private var time = 60
     private var returnPokers = 0
     
     private let model = Model()
