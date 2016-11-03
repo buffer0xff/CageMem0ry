@@ -81,7 +81,7 @@ class ResultsViewController: UIViewController {
             failedDetailLabel.hidden = true
             banner.image = UIImage(named: "SuccessBanner")
             timeLabel.text = "花费时间\(self.time)秒"
-            successDetailLabel.text = "恭喜你获得称号\n［\(self.getGift())］\n及精美礼品一份"
+            successDetailLabel.text = "恭喜你获得称号\n［\(self.getRank())］\n及\(self.getGift())"
         } else {
             banner.image = UIImage(named: "FailedBanner")
             timeLabel.hidden = true
@@ -169,16 +169,25 @@ class ResultsViewController: UIViewController {
             }, completion: nil)
     }
     
-    private func getGift() -> String {
+    private func getRank() -> String {
         switch self.time {
         case 0...10:
             return "传奇黑客"
-        case 11...15:
+        case 11...20:
             return "黑客大师"
-        case 16...20:
-            return "进阶黑客"
         default:
             return "黑客新手"
+        }
+    }
+    
+    private func getGift() -> String {
+        switch self.time {
+        case 0...10:
+            return "神秘传奇礼品一份"
+        case 11...20:
+            return "旅行套装一份"
+        default:
+            return "棒球帽一顶"
         }
     }
     
