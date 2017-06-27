@@ -21,10 +21,10 @@ class PokerCell: UICollectionViewCell {
     var cleared: Bool = false {
         didSet {
             if cleared {
-                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
-                dispatch_after(delayTime, dispatch_get_main_queue(), {
-                    self.imageView.hidden = true
-                    self.coverView.hidden = true
+                let delayTime = DispatchTime.now() + Double(Int64(0.3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+                    self.imageView.isHidden = true
+                    self.coverView.isHidden = true
                 })
             }
         }
@@ -32,28 +32,28 @@ class PokerCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentView.backgroundColor = UIColor.whiteColor()
+        self.contentView.backgroundColor = UIColor.white
         
-        self.imageView.contentMode = .ScaleAspectFit
-        self.imageView.backgroundColor = UIColor.whiteColor()
+        self.imageView.contentMode = .scaleAspectFit
+        self.imageView.backgroundColor = UIColor.white
         self.contentView.addSubview(self.imageView)
-        self.imageView.snp_makeConstraints { (make) in
+        self.imageView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.contentView)
         }
         
         self.coverView.image = UIImage(named: "Cover")
-        self.coverView.contentMode = .ScaleAspectFill
-        self.coverView.backgroundColor = UIColor.lightGrayColor()
+        self.coverView.contentMode = .scaleAspectFill
+        self.coverView.backgroundColor = UIColor.lightGray
         self.contentView.addSubview(self.coverView)
-        self.coverView.snp_makeConstraints { (make) in
+        self.coverView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.contentView)
         }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.imageView.hidden = false
-        self.coverView.hidden = false
+        self.imageView.isHidden = false
+        self.coverView.isHidden = false
         self.pokerId = 1
         self.cleared = false
     }
@@ -67,52 +67,52 @@ class PokerCell: UICollectionViewCell {
 class GameViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ResultsDelegate {
     
     //  DEFINE GLOBAL VALUE
-    private let BASETIME = 30 // change this value for adjust time
+    fileprivate let BASETIME = 30 // change this value for adjust time
     
-    private var gameBoard = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
-    private let screenWidth = UIScreen.mainScreen().bounds.size.width
-    private let screenHeight = UIScreen.mainScreen().bounds.size.height
-    private var itemSize = CGSizeZero
-    private let timeLable = UILabel()
-    private var timer: NSTimer?
-    private var time = 30
-    private var returnPokers = 0
+    fileprivate var gameBoard = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
+    fileprivate let screenWidth = UIScreen.main.bounds.size.width
+    fileprivate let screenHeight = UIScreen.main.bounds.size.height
+    fileprivate var itemSize = CGSize.zero
+    fileprivate let timeLable = UILabel()
+    fileprivate var timer: Timer?
+    fileprivate var time = 30
+    fileprivate var returnPokers = 0
     
-    private let model = Model()
-    private var pokers = [UInt]()
-    private var lastIndex: NSIndexPath?
+    fileprivate let model = Model()
+    fileprivate var pokers = [UInt]()
+    fileprivate var lastIndex: IndexPath?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.gameBoard = UICollectionView(frame: CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height), collectionViewLayout: UICollectionViewFlowLayout())
+        self.gameBoard = UICollectionView(frame: CGRect(x: 0, y: 64, width: self.view.frame.size.width, height: self.view.frame.size.height), collectionViewLayout: UICollectionViewFlowLayout())
         self.gameBoard.showsVerticalScrollIndicator = false
         self.gameBoard.showsHorizontalScrollIndicator = false
-        self.gameBoard.scrollEnabled = false
+        self.gameBoard.isScrollEnabled = false
         self.gameBoard.alwaysBounceVertical = false
         self.gameBoard.alwaysBounceHorizontal = false
         self.gameBoard.delegate = self
         self.gameBoard.dataSource = self
-        self.gameBoard.registerClass(PokerCell.self, forCellWithReuseIdentifier: "identifier")
-        self.gameBoard.backgroundColor = UIColor.whiteColor()
-        self.view.backgroundColor = UIColor.whiteColor()
+        self.gameBoard.register(PokerCell.self, forCellWithReuseIdentifier: "identifier")
+        self.gameBoard.backgroundColor = UIColor.white
+        self.view.backgroundColor = UIColor.white
         self.view.addSubview(self.gameBoard)
         
         self.timeLable.text = "剩余时间\(self.time)秒"
-        self.timeLable.textAlignment = .Center
-        self.timeLable.font = UIFont.boldSystemFontOfSize(21)
+        self.timeLable.textAlignment = .center
+        self.timeLable.font = UIFont.boldSystemFont(ofSize: 21)
         self.view.addSubview(self.timeLable)
-        self.timeLable.snp_makeConstraints { (make) in
+        self.timeLable.snp.makeConstraints { (make) in
             make.left.right.equalTo(self.view)
             make.top.equalTo(self.view).inset(64)
             make.height.equalTo(21)
         }
         
         let restartButton = UIButton()
-        restartButton.setTitle("重新开始", forState: .Normal)
-        restartButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        restartButton.addTarget(self, action: #selector(GameViewController.backToWelcome), forControlEvents: .TouchUpInside)
+        restartButton.setTitle("重新开始", for: UIControlState())
+        restartButton.setTitleColor(UIColor.black, for: UIControlState())
+        restartButton.addTarget(self, action: #selector(GameViewController.backToWelcome), for: .touchUpInside)
         self.view.addSubview(restartButton)
-        restartButton.snp_makeConstraints { (make) in
+        restartButton.snp.makeConstraints { (make) in
             make.right.equalTo(self.view).inset(30)
             make.top.equalTo(self.view).inset(54)
             make.width.equalTo(100)
@@ -121,7 +121,7 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         
         let itemWidth = (self.screenWidth - 30*3 - 50*2)/4
         let itemHeight = (self.screenHeight - 64 - 30*3 - 50*2)/4
-        self.itemSize = CGSizeMake(itemWidth, itemHeight)
+        self.itemSize = CGSize(width: itemWidth, height: itemHeight)
         
         self.startGame()
     }
@@ -143,8 +143,8 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
         self.startTimer()
     }
     
-    private func startTimer() {
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(resumeTimer), userInfo: nil, repeats: true)
+    fileprivate func startTimer() {
+        self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(resumeTimer), userInfo: nil, repeats: true)
         self.timeLable.text = "剩余时间\(self.time)秒"
     }
     
@@ -157,70 +157,70 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
             self.time = BASETIME
 
             let result = ResultsViewController()
-            result.type = .Failed
+            result.type = .failed
             result.delegate = self
-            self.navigationController?.presentViewController(result, animated: false, completion: nil)
+            self.navigationController?.present(result, animated: false, completion: nil)
         }
     }
     
-    private func showAllPokers() {
+    fileprivate func showAllPokers() {
         for i in 0...(self.pokers.count - 1) {
-            let cell = self.gameBoard.cellForItemAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as! PokerCell
-            cell.imageView.hidden = false
-            cell.coverView.hidden = true
+            let cell = self.gameBoard.cellForItem(at: IndexPath(row: i, section: 0)) as! PokerCell
+            cell.imageView.isHidden = false
+            cell.coverView.isHidden = true
         }
     }
     
     // MARK: ResultsDelegate
     
     func backToWelcome() {
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        self.navigationController?.popToRootViewController(animated: true)
     }
     
     // MARK: UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.pokers.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("identifier", forIndexPath: indexPath) as! PokerCell
-        cell.backgroundColor = UIColor.grayColor()
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "identifier", for: indexPath) as! PokerCell
+        cell.backgroundColor = UIColor.gray
         cell.pokerId = self.pokers[indexPath.row]
         return cell
     }
     
     // MARK: UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsetsMake(50, 50, 50, 50)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 30
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 30
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return self.itemSize
     }
     
     // MARK: UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let currentCell = collectionView.cellForItemAtIndexPath(indexPath) as! PokerCell
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let currentCell = collectionView.cellForItem(at: indexPath) as! PokerCell
         if currentCell.cleared {
             return
         }
-        currentCell.coverView.hidden = true
+        currentCell.coverView.isHidden = true
         if self.lastIndex == nil || indexPath == self.lastIndex {
             self.lastIndex = indexPath
             return
         }
-        let lastCell = collectionView.cellForItemAtIndexPath(self.lastIndex!) as! PokerCell
+        let lastCell = collectionView.cellForItem(at: self.lastIndex!) as! PokerCell
         if currentCell.pokerId == lastCell.pokerId {
             currentCell.cleared = true
             lastCell.cleared = true
@@ -231,20 +231,20 @@ class GameViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
                 let result = ResultsViewController()
                 result.time = self.BASETIME - self.time
-                result.type = .Success
+                result.type = .success
                 result.delegate = self
                 
-                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
-                dispatch_after(delayTime, dispatch_get_main_queue(), {
+                let delayTime = DispatchTime.now() + Double(Int64(0.3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
                     self.showAllPokers()
                 })
-                self.navigationController?.presentViewController(result, animated: false, completion: nil)
+                self.navigationController?.present(result, animated: false, completion: nil)
             }
         } else {
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.3 * Double(NSEC_PER_SEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue(), {
-                currentCell.coverView.hidden = false
-                lastCell.coverView.hidden = false
+            let delayTime = DispatchTime.now() + Double(Int64(0.3 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+                currentCell.coverView.isHidden = false
+                lastCell.coverView.isHidden = false
             })
         }
         self.lastIndex = nil

@@ -10,7 +10,7 @@ import Foundation
 
 class Model: NSObject {
     
-    func getPokers(groupNum: UInt32 = 8, pokerNumber: UInt = 16) -> [UInt] {
+    func getPokers(_ groupNum: UInt32 = 8, pokerNumber: UInt = 16) -> [UInt] {
         var pokers: [UInt] = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8]
 //        for _ in 1...((pokerNumber-8)/2) {
 //            let pokerId = UInt(arc4random_uniform(groupNum) + 1)

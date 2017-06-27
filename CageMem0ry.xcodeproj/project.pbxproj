@@ -101,12 +101,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 336BE52C1D7D0D42009C2B11 /* Build configuration list for PBXNativeTarget "CageMem0ry" */;
 			buildPhases = (
-				919B86F867CC724737D39842 /* 📦 Check Pods Manifest.lock */,
+				919B86F867CC724737D39842 /* [CP] Check Pods Manifest.lock */,
 				336BE5161D7D0D42009C2B11 /* Sources */,
 				336BE5171D7D0D42009C2B11 /* Frameworks */,
 				336BE5181D7D0D42009C2B11 /* Resources */,
-				96BCC5A911B9B25F6D4CD72F /* 📦 Embed Pods Frameworks */,
-				27844AB7026ACF610BE958B4 /* 📦 Copy Pods Resources */,
+				96BCC5A911B9B25F6D4CD72F /* [CP] Embed Pods Frameworks */,
+				27844AB7026ACF610BE958B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -129,7 +129,7 @@
 				TargetAttributes = {
 					336BE5191D7D0D42009C2B11 = {
 						CreatedOnToolsVersion = 7.3.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0830;
 					};
 				};
 			};
@@ -164,14 +164,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		27844AB7026ACF610BE958B4 /* 📦 Copy Pods Resources */ = {
+		27844AB7026ACF610BE958B4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -179,29 +179,29 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CageMem0ry/Pods-CageMem0ry-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		919B86F867CC724737D39842 /* 📦 Check Pods Manifest.lock */ = {
+		919B86F867CC724737D39842 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		96BCC5A911B9B25F6D4CD72F /* 📦 Embed Pods Frameworks */ = {
+		96BCC5A911B9B25F6D4CD72F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,7 +338,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Cagetest.CageMem0ry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -352,7 +352,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Cagetest.CageMem0ry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
